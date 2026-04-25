@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets.js'
+import { AppContext } from '../context/AppContext.jsx'
+import toast from 'react-hot-toast'
 
 const InputField = (({ type, placeholder, name, handleChange, address }) => (
     <input className='w-full px-2 py-2.5 border border-gray-500/30 rounded outline-none text-gray-500 focus:border-primary transition'
@@ -15,6 +17,8 @@ const InputField = (({ type, placeholder, name, handleChange, address }) => (
 
 const AddAddress = () => {
 
+    const { axios, navigate, user } = useContext(AppContext);
+
     const [address, setAddress] = useState({
         firstName: "",
         lastName: "",
@@ -23,7 +27,7 @@ const AddAddress = () => {
         city: "",
         state: "",
         country: "",
-        pincode: "",
+        pinCode: "",
         phone: "",
     })
 
@@ -37,8 +41,24 @@ const AddAddress = () => {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-
+        try {
+            const { data } = await axios.post('/api/address/add', { address, userId: user._id })
+            if (data.success) {
+                toast.success(data.message)
+                navigate('/cart')
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/cart')
+        }
+    }, [])
 
     return (
         <div className='mt-16 pb-16 lg:mx-28'>
@@ -61,13 +81,13 @@ const AddAddress = () => {
 
                         <div className='grid grid-cols-2 gap-4'>
                             <InputField handleChange={handleChange} address={address} type="text" placeholder="Country" name="country" />
-                            <InputField handleChange={handleChange} address={address} type="text" placeholder="Pincode" name="pincode" />
+                            <InputField handleChange={handleChange} address={address} type="text" placeholder="Pincode" name="pinCode" />
                         </div>
                         <InputField handleChange={handleChange} address={address} type="text" placeholder="Phone Number" name="phone" />
 
                         <button
                             className='w-full mt-6 bg-primary text-white py-2.5 rounded hover:bg-primary-dull transition cursor-pointer uppercase'
-                        > 
+                        >
                             Save Address
                         </button>
                     </form>
