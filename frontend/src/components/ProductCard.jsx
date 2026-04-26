@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
     const { currency, cartItems, addToCart, removeFromCart, navigate } = useContext(AppContext)
 
     const handleClick = () => {
-        navigate(`/products/${product.category.toLowerCase()}/${product._id}`)
+        navigate(`/${product.category.toLowerCase()}/${product._id}`)
         window.scrollTo(0, 0)
     }
 

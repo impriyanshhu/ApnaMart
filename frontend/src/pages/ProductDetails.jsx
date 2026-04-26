@@ -29,8 +29,7 @@ const ProductDetails = () => {
         <div className="mt-12">
             <p>
                 <Link to={'/'}>Home</Link> /
-                <Link to={'/products'}> Products</Link> /
-                <Link to={`/products/${product.category.toLowerCase()}`}> {product.category}</Link> /
+                <Link to={`/${product.category.toLowerCase()}`}> {product.category}</Link> /
                 <span className="text-primary"> {product.name}</span>
             </p>
 
@@ -90,14 +89,14 @@ const ProductDetails = () => {
                     <div className='w-16 h-0.5 rounded-full bg-primary mt-2'></div>
                 </div>
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6 mt-6 w-full'>
-                        {
-                            relatedProducts.filter((product) => product.inStock).map((product, index)=>(
-                                <ProductCard key={index} product={product} />
-                            ))
-                        }
+                    {
+                        relatedProducts.filter((product) => product.inStock).map((product, index) => (
+                            <ProductCard key={index} product={product} />
+                        ))
+                    }
                 </div>
-                <button 
-                    onClick={() => {navigate('/products'); scrollTo(0,0);}} 
+                <button
+                    onClick={() => { navigate(`/${product.category.toLowerCase()}`); scrollTo(0, 0); }}
                     className="mx-auto cursor-pointer px-12 py-2.5 my-16 border rounded text-primary hover:bg-primary/10 transition"
                 >
                     See More

@@ -32,14 +32,20 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-2 border-b border-gray-300 bg-white relative transition-all shadow-md">
+        <nav className="sticky top-0 flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 py-2 border-b border-gray-300 bg-white transition-all shadow-md z-10">
 
-            <NavLink to={'/'} onClick={() => setOpen(false)} className='w-auto h-10'>
+            <NavLink to={'/'} onClick={() => setOpen(false)} className='w-auto h-10 md:h-12 '>
                 <img src={assets.logo} alt="" className='object-contain w-full h-full' />
             </NavLink>
 
-            <div className="hidden sm:flex items-center gap-8 text-lg">
-                <NavLink
+
+            <div className="hidden lg:flex w-md items-center gap-2 border border-gray-300 px-3 rounded-full">
+                <input onChange={(e) => setSearchQuery(e.target.value)} className="py-2 px-1 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
+                <img src={assets.search_icon} alt="search" className='w-4 h-4' />
+            </div>
+
+            <div className="hidden sm:flex items-center justify-center gap-8 text-lg">
+                {/* <NavLink
                     to='/'
                     className={({ isActive }) =>
                         isActive
@@ -47,8 +53,8 @@ const Navbar = () => {
                             : "text-gray-500 hover:text-primary-dull"
                     }>
                     Home
-                </NavLink>
-                <NavLink
+                </NavLink> */}
+                {/* <NavLink
                     to='/products'
                     className={({ isActive }) =>
                         isActive
@@ -56,21 +62,7 @@ const Navbar = () => {
                             : "text-gray-500 hover:text-primary-dull"
                     }>
                     All Product
-                </NavLink>
-                <NavLink
-                    to='/contact'
-                    className={({ isActive }) =>
-                        isActive
-                            ? "text-primary font-semibold"
-                            : "text-gray-500 hover:text-primary-dull"
-                    }>
-                    Contact
-                </NavLink>
-
-                <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                    <input onChange={(e) => setSearchQuery(e.target.value)} className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
-                    <img src={assets.search_icon} alt="search" className='w-4 h-4' />
-                </div>
+                </NavLink> */}
 
                 <div onClick={() => navigate('/cart')} className="relative cursor-pointer">
                     <img src={assets.nav_cart_icon} alt="cart" className='w-6 opacity-80' />
@@ -118,8 +110,13 @@ const Navbar = () => {
             {open && (
                 <div className={`${open ? 'flex' : 'hidden'} absolute top-15 z-40 left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-base md:hidden`}>
 
-                    <NavLink to='/' onClick={() => setOpen(false)} className="block">Home</NavLink>
-                    <NavLink to='/products' onClick={() => setOpen(false)} className="block">All Product</NavLink>
+                    {/* <NavLink to='/' onClick={() => setOpen(false)} className="block">Home</NavLink> */}
+                    {/* <NavLink to='/products' onClick={() => setOpen(false)} className="block">All Product</NavLink> */}
+
+                    <div className="flex items-center w-full text-sm gap-2 border border-gray-300 px-3 rounded-full">
+                        <input onChange={(e) => setSearchQuery(e.target.value)} className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
+                        <img src={assets.search_icon} alt="search" className='w-4 h-4' />
+                    </div>
 
                     {user &&
                         <NavLink
@@ -129,8 +126,6 @@ const Navbar = () => {
                             My Orders
                         </NavLink>
                     }
-
-                    <NavLink to='/contact' onClick={() => setOpen(false)} className="block">Contact</NavLink>
 
                     {!user ?
                         (<button

@@ -30,6 +30,9 @@ import fresh_fruits_image from "./fresh_fruits_image.png";
 import bottles_image from "./bottles_image.png";
 import maggi_image from "./maggi_image.png";
 import dairy_product_image from "./dairy_product_image.png";
+import cooking_oil_image from "./cooking_oil_image.png";
+import dry_fruits_image from "./dry_fruits_image.png";
+import chicken_image from "./chicken_image.png";
 import bakery_image from "./bakery_image.png";
 import grain_image from "./grain_image.png";
 import potato_image_1 from "./potato_image_1.png";
@@ -122,8 +125,8 @@ export const categories = [
     bgColor: "#FEE0E0",
   },
   {
-    text: "Cold Drinks",
-    path: "Drinks",
+    text: "Beverages",
+    path: "Beverages",
     image: bottles_image,
     bgColor: "#F0F5DE",
   },
@@ -163,6 +166,24 @@ export const categories = [
     image: spices_image,
     bgColor: "#FFF3E0",
   },
+  {
+    text: "Oils & Ghee",
+    path: "Oils",
+    image: cooking_oil_image,
+    bgColor: "#E8F5E9",
+  },
+  {
+    text: "Dry Fruits & Nuts",
+    path: "DryFruits",
+    image: dry_fruits_image,
+    bgColor: "#F3E5F5",
+  },
+  {
+    text: "Chicken, Meat & Fish",
+    path: "chicken",
+    image: chicken_image,
+    bgColor: "#F0F5DE",
+  }
 ];
 
 export const dummyProducts = [
@@ -762,48 +783,48 @@ export const dummyProducts = [
     inStock: true,
   },
   {
-  _id: "sn02l31o",
-  name: "Kurkure Masala Munch 90g",
-  category: "Snacks",
-  price: 25,
-  offerPrice: 22,
-  image: [kurkure_image],
-  description: [
-    "Crunchy corn snack",
-    "Spicy Indian masala flavor",
-    "Great for quick munching",
-  ],
-  inStock: true,
-},
+    _id: "sn02l31o",
+    name: "Kurkure Masala Munch 90g",
+    category: "Snacks",
+    price: 25,
+    offerPrice: 22,
+    image: [kurkure_image],
+    description: [
+      "Crunchy corn snack",
+      "Spicy Indian masala flavor",
+      "Great for quick munching",
+    ],
+    inStock: true,
+  },
 
-// Spices
-{
-  _id: "sp01",
-  name: "Turmeric Powder 200g",
-  category: "Spices",
-  price: 60,
-  offerPrice: 55,
-  image: [turmeric_image],
-  description: [
-    "Pure turmeric powder",
-    "Rich color and flavor",
-    "Essential Indian spice",
-  ],
-  inStock: true,
-},
-{
-  _id: "sp02",
-  name: "Red Chili Powder 200g",
-  category: "Spices",
-  price: 70,
-  offerPrice: 65,
-  image: [chili_powder_image],
-  description: [
-    "Spicy and flavorful",
-    "Enhances taste of dishes",
-  ],
-  inStock: true,
-},
+  // Spices
+  {
+    _id: "sp01",
+    name: "Turmeric Powder 200g",
+    category: "Spices",
+    price: 60,
+    offerPrice: 55,
+    image: [turmeric_image],
+    description: [
+      "Pure turmeric powder",
+      "Rich color and flavor",
+      "Essential Indian spice",
+    ],
+    inStock: true,
+  },
+  {
+    _id: "sp02",
+    name: "Red Chili Powder 200g",
+    category: "Spices",
+    price: 70,
+    offerPrice: 65,
+    image: [chili_powder_image],
+    description: [
+      "Spicy and flavorful",
+      "Enhances taste of dishes",
+    ],
+    inStock: true,
+  },
 
 
 
