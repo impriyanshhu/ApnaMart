@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import transporter from "../config/nodemailer.js";
 
 // Register User : /api/user/register
 export const register = async (req, res) => {
@@ -70,7 +71,7 @@ export const login = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
-        return res.json({ success: true, user: { id: user._id, email: user.email, name: user.name, token: token }, message: "User logged in successfully" });
+        return res.json({ success: true, user: { id: user._id, email: user.email, name: user.name }, message: "User logged in successfully" });
 
     } catch (error) {
         console.log(error.message);
@@ -107,3 +108,139 @@ export const logout = async (req, res) => {
         return res.json({ success: false, message: error.message });
     }
 }
+
+// Send Reset OTP : /api/user/send-reset-otp
+export const sendResetOtp = async (req, res) => {
+
+    try {
+
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+
+        const user = await User.findOne({
+            email: email.toLowerCase().trim()
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        // Generate 6 digit OTP
+        const otp = String(
+            Math.floor(100000 + Math.random() * 900000)
+        );
+
+        // Save OTP
+        user.resetOtp = otp;
+
+        // 15 min expiry
+        user.resetOtpExpireAt = Date.now() + 15 * 60 * 1000;
+
+        await user.save();
+        // Send Mail
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+
+            to: user.email,
+
+            subject: "Password Reset OTP",
+
+            html: `
+                <h2>Password Reset OTP</h2>
+
+                <p>Your OTP is:</p>
+
+                <h1>${otp}</h1>
+
+                <p>This OTP will expire in 15 minutes.</p>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP sent successfully"
+        });
+
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+
+// Reset Password : /api/user/reset-password
+export const resetPassword = async (req, res) => {
+    try {
+        const { email, otp, password } = req.body;
+
+        if (!email || !otp || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            });
+        }
+
+        const user = await User.findOne({
+            email: email.toLowerCase().trim()
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        // Check OTP
+        if (user.resetOtp !== otp) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP"
+            });
+        }
+
+        // Check Expiry
+        if (user.resetOtpExpireAt < Date.now()) {
+            return res.status(400).json({
+                success: false,
+                message: "OTP expired"
+            });
+        }
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Update password
+        user.password = hashedPassword;
+
+        // Clear OTP
+        user.resetOtp = "";
+        user.resetOtpExpireAt = 0;
+
+        await user.save();
+        return res.status(200).json({
+            success: true,
+            message: "Password reset successful"
+        });
+
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};

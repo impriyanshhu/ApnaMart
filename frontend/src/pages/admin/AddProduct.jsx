@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { assets, categories } from '../../assets/assets.js';
 import { AppContext } from '../../context/AppContext.jsx';
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const AddProduct = () => {
+
+    const { id } = useParams();
+    const isEdit = Boolean(id)
 
     const [files, setFiles] = useState([]);
     const [name, setName] = useState("");
@@ -12,13 +16,27 @@ const AddProduct = () => {
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("");
     const [offerPrice, setOfferPrice] = useState("");
+    const [existingImages, setExistingImages] = useState([]);
 
-    const { axios } = useContext(AppContext);
+    const { axios, navigate, fetchProducts } = useContext(AppContext);
+
+    const fetchProduct = async () => {
+        const { data } = await axios.patch("/api/product/id", { id });
+        if (data.success) {
+            const p = data.product;
+            setExistingImages(p.image || []);
+            setName(p.name);
+            setDescription(p.description.join("\n"));
+            setCategory(p.category);
+            setPrice(p.price);
+            setOfferPrice(p.offerPrice);
+        }
+    };
 
     const onSubmitHandler = async (event) => {
-        try {
-            event.preventDefault();
+        event.preventDefault();
 
+        try {
             const productData = {
                 name,
                 description: description.split('\n'),
@@ -30,28 +48,37 @@ const AddProduct = () => {
             const formData = new FormData();
             formData.append('productData', JSON.stringify(productData));
 
-            for (let i = 0; i < files.length; i++) {
-                formData.append('images', files[i])
+            files.forEach((file) => {
+                if (file) formData.append('images', file);
+            });
+
+            let response;
+
+            if (isEdit) {
+                formData.append("id", id);
+                response = await axios.post('/api/product/update', formData);
+            } else {
+                response = await axios.post('/api/product/add', formData);
             }
 
-            const { data } = await axios.post('/api/product/add', formData);
-
-            if (data.success) {
-                toast.success(data.message);
-                setName('');
-                setDescription('');
-                setCategory('');
-                setPrice('');
-                setOfferPrice('');
-                setFiles([]);
+            if (response.data.success) {
+                await fetchProducts();
+                toast.success(response.data.message);
+                navigate('/admin/product-list');
             } else {
-                toast.error(data.message)
+                toast.error(response.data.message);
             }
 
         } catch (error) {
             toast.error(error.message);
         }
     }
+
+    useEffect(() => {
+        if (isEdit) {
+            fetchProduct();
+        }
+    }, [id]);
 
     return (
         <div className="no-scrollbar flex-1 h-[90vh] overflow-y-scroll flex flex-col justify-between">
@@ -72,7 +99,19 @@ const AddProduct = () => {
                                     id={`image${index}`}
                                     hidden
                                 />
-                                <img className="max-w-24 cursor-pointer" src={files[index] ? URL.createObjectURL(files[index]) : assets.upload_area} alt="uploadArea" width={100} height={100} />
+                                <img
+                                    className="max-w-24 cursor-pointer"
+                                    src={
+                                        files[index]
+                                            ? URL.createObjectURL(files[index])
+                                            : existingImages[index]
+                                                ? existingImages[index]
+                                                : assets.upload_area
+                                    }
+                                    alt="uploadArea"
+                                    width={100}
+                                    height={100}
+                                />
                             </label>
                         ))}
                     </div>
@@ -145,7 +184,9 @@ const AddProduct = () => {
                     </div>
                 </div>
 
-                <button className="px-8 py-2.5 bg-primary cursor-pointer text-white font-medium rounded">ADD</button>
+                <button className="px-8 py-2.5 bg-primary text-white rounded">
+                    {isEdit ? "UPDATE" : "ADD"}
+                </button>
 
             </form>
         </div>

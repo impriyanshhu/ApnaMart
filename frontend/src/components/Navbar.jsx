@@ -64,7 +64,7 @@ const Navbar = () => {
                     All Product
                 </NavLink> */}
 
-                <div onClick={() => navigate('/cart')} className="relative cursor-pointer">
+                <div onClick={() => { navigate('/cart'); scrollTo(0, 0) }} className="relative cursor-pointer">
                     <img src={assets.nav_cart_icon} alt="cart" className='w-6 opacity-80' />
                     <button className="absolute -top-2 -right-3 text-xs text-white bg-primary w-4.5 h-4.5 rounded-full">{getCartCount()}</button>
                 </div>

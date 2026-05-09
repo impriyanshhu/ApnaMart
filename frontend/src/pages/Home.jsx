@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import MainBanner from '../components/MainBanner.jsx'
 import Categories from '../components/Categories.jsx'
 import BestSeller from '../components/BestSeller.jsx'
@@ -6,12 +6,15 @@ import BottomBanner from '../components/BottomBanner.jsx'
 import { AppContext } from '../context/AppContext.jsx'
 import { categories } from '../assets/assets.js'
 import CategoryProductList from '../components/CategoryProductList.jsx'
+import Services from '../components/Services.jsx'
 
 const Home = () => {
 
-  const randomCategories = [...categories]
-  .sort(() => 0.5 - Math.random())
-  .slice(0, 5);
+  const randomCategories = useMemo(() => {
+    return [...categories]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 5)
+  }, [])
 
   return (
     <div className='mt-10'>
@@ -28,6 +31,7 @@ const Home = () => {
         ))
       }
       <BottomBanner />
+      <Services />
     </div>
   )
 }

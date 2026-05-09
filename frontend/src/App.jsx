@@ -43,6 +43,7 @@ const App = () => {
             <Route index element={isAdmin ? <AddProduct /> : null} />
             <Route path='product-list' element={<ProductList />} />
             <Route path='orders' element={<Orders />} />
+            <Route path='edit/:id' element={<AddProduct />} />
           </Route>
         </Routes>
       </div>

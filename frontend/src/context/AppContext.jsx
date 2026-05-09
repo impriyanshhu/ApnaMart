@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dummyProducts } from "../assets/assets";
 import toast from "react-hot-toast";
 import axios from 'axios'
 
@@ -17,6 +16,7 @@ export const AppContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
     const [showUserLogin, setShowUserLogin] = useState(false);
+    const [showAdminLogin, setShowAdminLogin] = useState(false);
     const [products, setProducts] = useState([]);
 
     const [cartItems, setCartItems] = useState({});
