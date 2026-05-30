@@ -17,10 +17,13 @@ import AdminLayout from './pages/admin/AdminLayout.jsx'
 import AddProduct from './pages/admin/AddProduct.jsx'
 import ProductList from './pages/admin/ProductList.jsx'
 import Orders from './pages/admin/Orders.jsx'
+import LoadingSpinner from './components/LoadingSpinner.jsx'
 
 const App = () => {
 
-  const isAdminPath = useLocation().pathname.includes("admin");
+  const location = useLocation();
+
+  const isAdminPath = location.pathname.includes("admin");
   const { showUserLogin, isAdmin } = useContext(AppContext)
 
   return (
@@ -39,6 +42,7 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
           <Route path='/add-address' element={<AddAddress />} />
           <Route path='/my-orders' element={<MyOrders />} />
+          <Route path='/loader' element={<LoadingSpinner />} />
           <Route path='/admin' element={isAdmin ? <AdminLayout /> : <AdminLogin />}>
             <Route index element={isAdmin ? <AddProduct /> : null} />
             <Route path='product-list' element={<ProductList />} />

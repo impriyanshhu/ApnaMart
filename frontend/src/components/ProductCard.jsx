@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import { assets } from '../assets/assets.js'
+import { FaStar } from "react-icons/fa";
+import { FiShoppingCart } from "react-icons/fi";
 import { AppContext } from '../context/AppContext'
 
 const ProductCard = ({ product }) => {
@@ -34,17 +35,11 @@ const ProductCard = ({ product }) => {
                     {product.name}
                 </p>
 
-                {/* STATIC RATING (OK for now) */}
                 <div className="hidden sm:flex items-center gap-0.5">
                     {Array(5).fill('').map((_, i) => (
-                        <img
-                            key={i}
-                            className='w-3 md:w-3.5'
-                            src={assets.star_icon}
-                            alt=""
-                        />
+                        <FaStar className="text-primary" key={i}/>
                     ))}
-                    <p>(4)</p>
+                    <p>(5)</p>
                 </div>
 
                 {/* PRICE + CART */}
@@ -65,7 +60,7 @@ const ProductCard = ({ product }) => {
                                 className="flex items-center justify-center gap-1 bg-primary/10 border border-primary/40 md:w-20 w-14 h-8 rounded cursor-pointer"
                                 onClick={() => addToCart(product._id)}
                             >
-                                <img src={assets.cart_icon} alt="" />
+                                <FiShoppingCart />
                                 Add
                             </button>
                         ) : (

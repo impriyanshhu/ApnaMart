@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
-import { assets } from '../../assets/assets.js';
+import { MdLocalGroceryStore } from "react-icons/md";
 import toast from 'react-hot-toast';
 
 const Orders = () => {
@@ -34,14 +34,15 @@ const Orders = () => {
 
             <div className="flex gap-5 max-w-80 items-center">
 
-              <img className="w-12 h-12 object-cover" src={assets.box_icon} alt="boxIcon" />
+              {/* <img className="w-12 h-12 object-cover" src={assets.box_icon} alt="boxIcon" /> */}
+              <MdLocalGroceryStore size={36} className='text-primary' />
 
               <div>
                 {order.items.map((item, index) => (
                   <div key={index} className="flex flex-col">
                     <p className="font-medium">
-                      {item.product.name}{" "}
-                      <span className="text-primary">x {item.quantity}</span>
+                      {item.product?.name || "Product Deleted"}
+                      <span className="text-primary"> x {item.quantity}</span>
                     </p>
                   </div>
                 ))}

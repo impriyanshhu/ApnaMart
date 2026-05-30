@@ -22,6 +22,29 @@ const ProductList = () => {
     }
   };
 
+  const deleteProduct = async (id) => {
+    try {
+      const confirmDelete = confirm(
+        "Are you sure you want to delete this product?"
+      );
+
+      if (!confirmDelete) return;
+
+      const { data } = await axios.delete("/api/product/delete", {
+        data: { id },
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        fetchProducts();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className="no-scrollbar flex justify-between h-[90vh] overflow-y-auto">
 
@@ -100,12 +123,21 @@ const ProductList = () => {
 
                     {/* Action */}
                     <td className="px-4 py-2">
-                      <button
-                        onClick={() => navigate(`/admin/edit/${product._id}`)}
-                        className="text-blue-500 hover:underline cursor-pointer"
-                      >
-                        Edit
-                      </button>
+                      <div className="flex gap-3 items-center">
+                        <button
+                          onClick={() => navigate(`/admin/edit/${product._id}`)}
+                          className="text-blue-500 hover:underline cursor-pointer hover:scale-105"
+                        >
+                          Edit
+                        </button>
+                        /
+                        <button
+                          onClick={() => deleteProduct(product._id)}
+                          className="text-red-500 hover:underline cursor-pointer hover:scale-105"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
 
                   </tr>

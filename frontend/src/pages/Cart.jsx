@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
-import { assets, dummyAddress } from '../assets/assets.js';
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import { FiArrowLeft } from "react-icons/fi";
 import toast from 'react-hot-toast';
-import { data } from 'react-router-dom';
 
 const Cart = () => {
 
-    const { products, currency, cartItems, removeFromCart, getCartCount, updateCartItem, navigate, getCartAmount, axios, user, setCartItems } = useContext(AppContext)
+    const { products, currency, cartItems, removeFromCart, getCartCount, updateCartItem, navigate, getCartAmount, axios, user, setCartItems, setShowUserLogin } = useContext(AppContext)
 
     const [cartArray, setCartArray] = useState([]);
     const [addresses, setAddresses] = useState([])
@@ -59,6 +59,10 @@ const Cart = () => {
                 } else {
                     toast.error(data.message)
                 }
+            }
+            else {
+                // Place Order with Stripe
+                
             }
         } catch (error) {
             toast.error(error.message)
@@ -120,13 +124,13 @@ const Cart = () => {
                         </div>
                         <p className="text-center">{currency}{product.offerPrice * product.quantity}</p>
                         <button onClick={() => removeFromCart(product._id)} className="cursor-pointer mx-auto">
-                            <img src={assets.remove_icon} alt="remove" className='inline-block w-6 h-6' />
+                            <IoMdCloseCircleOutline className='text-red-500 inline-block w-6 h-6' />
                         </button>
                     </div>)
                 )}
 
                 <button onClick={() => { navigate('/'); scrollTo(0, 0) }} className="group cursor-pointer flex items-center mt-8 gap-2 text-primary font-medium">
-                    <img src={assets.arrow_right_icon_colored} alt="arrow" className='group-hover:-translate-x-1 transition ' />
+                    <FiArrowLeft className='group-hover:-translate-x-1 transition' />
                     Continue Shopping
                 </button>
 
@@ -188,9 +192,20 @@ const Cart = () => {
                     </p>
                 </div>
 
-                <button onClick={placeOrder} className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition">
-                    {paymentOption === "COD" ? "Place Order" : "Proceed to Checkout"}
-                </button>
+                {user && (
+                    <button onClick={placeOrder} className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition">
+                        {paymentOption === "COD" ? "Place Order" : "Proceed to Checkout"}
+                    </button>
+                )
+                }
+
+                {!user && (
+                    <button onClick={() => setShowUserLogin(true)} className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition">
+                        Login to Procced
+                    </button>
+                )
+                }
+
             </div>
         </div>
     )

@@ -184,7 +184,7 @@ const AddProduct = () => {
                     </div>
                 </div>
 
-                <button className="px-8 py-2.5 bg-primary text-white rounded">
+                <button className="px-8 py-2.5 bg-primary text-white rounded cursor-pointer">
                     {isEdit ? "UPDATE" : "ADD"}
                 </button>
 

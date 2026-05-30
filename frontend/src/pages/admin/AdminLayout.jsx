@@ -45,7 +45,7 @@ const AdminLayout = () => {
 
                 <div className="flex items-center gap-5 text-gray-500">
                     <p className="hidden sm:block">Hi! Admin</p>
-                    <button onClick={logout} className='border rounded-full text-sm px-4 py-1 hover:text-red-500'>
+                    <button onClick={logout} className='border rounded-full text-sm px-4 py-1 hover:text-red-500 hover:scale-105 cursor-pointer'>
                         Logout
                     </button>
                 </div>

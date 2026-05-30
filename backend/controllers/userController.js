@@ -228,7 +228,7 @@ export const resetPassword = async (req, res) => {
 
         // Clear OTP
         user.resetOtp = "";
-        user.resetOtpExpireAt = 0;
+        user.resetOtpExpiryAt = 0;
 
         await user.save();
         return res.status(200).json({

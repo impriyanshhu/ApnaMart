@@ -13,7 +13,7 @@ const Services = () => {
             {services.map((item, index) => (
                 <div
                     key={index}
-                    className='border border-primary text-primary-dull p-5 text-center rounded-lg shadow-sm bg-primary/15'
+                    className='border border-primary text-primary-dull p-5 text-center rounded-lg shadow-sm bg-primary/10'
                 >
                     <p className='font-semibold'>{item}</p>
                 </div>

@@ -4,20 +4,29 @@ import { AppContext } from '../context/AppContext.jsx'
 
 const CategoryProductList = ({ category, title }) => {
 
-  const { products } = useContext(AppContext)
-
+  const { products, navigate } = useContext(AppContext);
+  
   const filteredProducts = products.filter(
     (product) =>
       product.category?.toLowerCase() === category?.toLowerCase()
   )
-
+  
   if (filteredProducts.length === 0) return null
 
   return (
     <div className='mt-16'>
-      <p className='text-2xl md:text-3xl font-medium'>
-        {title}
-      </p>
+
+      <div className='flex items-center justify-between'>
+        <p className='text-2xl md:text-3xl font-medium'>
+          {title}
+        </p>
+        <button
+          className='text-base md:text-xl md:pr-10 text-primary cursor-pointer'
+          onClick={() => { navigate(`/${category.toLowerCase()}`); scrollTo(0, 0); }}
+        >
+          see all
+        </button>
+      </div>
 
       <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6 mt-6'>
         {

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext';
 import { Link, useParams } from 'react-router-dom';
-import { assets } from '../assets/assets.js';
+import { FaStar } from "react-icons/fa";
 import ProductCard from '../components/ProductCard.jsx';
 
 const ProductDetails = () => {
@@ -53,7 +53,11 @@ const ProductDetails = () => {
 
                     <div className="flex items-center gap-0.5 mt-1">
                         {Array(5).fill('').map((_, i) => (
-                            <img key={i} src={i < 4 ? assets.star_icon : assets.star_dull_icon} alt="" className='md:w-4 w-3.5' />
+                            i < 4 ? (
+                                <FaStar key={i} className="text-primary md:w-4 w-3.5" />
+                            ) : (
+                                <FaStar key={i} className="text-gray-400 md:w-4 w-3.5" />
+                            )
                         ))}
                         <p className="text-base ml-2">(4)</p>
                     </div>
