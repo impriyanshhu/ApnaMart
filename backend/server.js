@@ -18,7 +18,7 @@ await connectDB();
 await connectCloudinary();
 
 // Allow multiple origins
-const allowedOrigins = ['http://localhost:5173']; // Add your frontend URL here
+const allowedOrigins = ['http://localhost:5173','https://apnamart-sigma.vercel.app']; // Add your frontend URL here
 
 // Middleware
 app.use(express.json());
